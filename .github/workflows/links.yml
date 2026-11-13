@@ -1,0 +1,23 @@
+name: links
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "23 6 * * 1"   # weekly, Monday
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --max-concurrency 4
+            --accept 200,201,202,204,301,302,303,307,308,403,429
+            --exclude-path LICENSE
+            README.md CONTRIBUTING.md
+          fail: true
